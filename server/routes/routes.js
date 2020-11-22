@@ -1,6 +1,18 @@
 //server/routes/routes.js
 var express = require("express");
 var router = express.Router();
+var pgp = require("pg-promise")(/* options */);
+var db = pgp(
+  "postgres://mlyllqsbannsmo:242faf070b44b39ad59398e86eaf77ef181ad311286f3ae3cc1c39526ddaba48@ec2-54-163-47-62.compute-1.amazonaws.com:5432/d59bbr1se23804"
+);
+
+db.one("SELECT $1 AS value", 123)
+  .then(function (data) {
+    console.log("DATA:", data.value);
+  })
+  .catch(function (error) {
+    console.log("ERROR:", error);
+  });
 
 var Expense = require("../../models/Expense.js");
 
@@ -26,7 +38,7 @@ router.route("/update").post(function (req, res) {
     month: req.body.month,
     year: req.body.year,
   };
-  Expense.update({ _id: req.body._id }, {$set:doc}, function (err, result) {
+  Expense.update({ _id: req.body._id }, { $set: doc }, function (err, result) {
     if (err) res.send(err);
     res.send("Expense successfully updated!");
   });
@@ -45,13 +57,13 @@ router.get("/getAll", function (req, res) {
   var monthRec = req.query.month;
   var yearRec = req.query.year;
   if (monthRec && monthRec !== "All") {
-    Expense.find({ $and: [{ month: monthRec }, { year: yearRec }] }, function (
-      err,
-      expenses
-    ) {
-      if (err) res.send(err);
-      res.json(expenses);
-    });
+    Expense.find(
+      { $and: [{ month: monthRec }, { year: yearRec }] },
+      function (err, expenses) {
+        if (err) res.send(err);
+        res.json(expenses);
+      }
+    );
   } else {
     Expense.find({ year: yearRec }, function (err, expenses) {
       if (err) res.send(err);
