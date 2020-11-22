@@ -23,8 +23,10 @@ router.get("/id/:id", function (req, res) {
       console.log("ERROR:", error);
     });
 });
-router.all("*", function (req, res) {
-  res.writeHead(404);
+router.get("*", function (req, res) {
+  response.writeHead(404, { "Content-Type": "text/plain" });
+  response.write("404 Not found");
+  response.end();
 });
 // router.get("/", function (req, res) {
 //   res.render("index");
