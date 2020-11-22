@@ -16,8 +16,8 @@ router.get("/:id", function (req, res) {
       //   console.log(data.value);
       // });
       // console.log("DATA:", data.value);
-      var json = { id: req.params.id, url: data };
-      res.send(json);
+
+      res.send(data);
     })
     .catch(function (error) {
       console.log("ERROR:", error);
