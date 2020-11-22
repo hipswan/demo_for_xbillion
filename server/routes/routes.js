@@ -9,7 +9,7 @@ router.get("/", function (req, res) {
   db.one("SELECT $1 AS value", 123)
     .then(function (data) {
       console.log("DATA:", data.value);
-      res.send(data.value);
+      res.send("data return");
     })
     .catch(function (error) {
       console.log("ERROR:", error);
