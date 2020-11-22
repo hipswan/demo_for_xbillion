@@ -6,7 +6,7 @@ var db = pgp(
   "postgres://mlyllqsbannsmo:242faf070b44b39ad59398e86eaf77ef181ad311286f3ae3cc1c39526ddaba48@ec2-54-163-47-62.compute-1.amazonaws.com:5432/d59bbr1se23804"
 );
 router.get("/", function (req, res) {
-  db.one("SELECT $1 AS value", 123)
+  db.query("SELECT $1:name FROM $2:name", ["*", "fullstack.video"])
     .then(function (data) {
       console.log("DATA:", data.value);
       res.send("data return");
