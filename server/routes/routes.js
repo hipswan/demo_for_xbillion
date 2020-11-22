@@ -5,12 +5,17 @@ var pgp = require("pg-promise")(/* options */);
 var db = pgp(
   "postgres://mlyllqsbannsmo:242faf070b44b39ad59398e86eaf77ef181ad311286f3ae3cc1c39526ddaba48@ec2-54-163-47-62.compute-1.amazonaws.com:5432/d59bbr1se23804"
 );
-const ctf = pgp.as.ctf;
 router.get("/", function (req, res) {
-  db.query('SELECT * FROM fullstack."video"')
-    .then(function (data) {
-      console.log("DATA:", ctf.json(data));
-      res.send("data return ");
+  db.any('SELECT * FROM fullstack."video"')
+    .then((data) => {
+      data.map((row, index, data) => {
+        console.log(row);
+        console.log(index);
+        console.log(data);
+        console.log(data.value);
+      });
+      console.log("DATA:", data.value);
+      res.send("data return");
     })
     .catch(function (error) {
       console.log("ERROR:", error);
